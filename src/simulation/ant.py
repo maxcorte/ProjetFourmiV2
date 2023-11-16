@@ -12,3 +12,29 @@ class Larva:
 class Ant:
     def __init__(self, ant_type):
         self.ant_type = ant_type
+
+
+class MaleAnt(Ant):
+    def __init__(self):
+        super().__init__("Male")
+        # Add any specific attributes or methods for MaleAnt
+
+class WorkerAnt(Ant):
+    def __init__(self):
+        super().__init__("Worker")
+        # Add any specific attributes or methods for WorkerAnt
+
+class NurseAnt(Ant):
+    def __init__(self):
+        super().__init__("Nurse")
+        # Add any specific attributes or methods for NurseAnt
+
+class ForagerAnt(Ant):
+    def __init__(self):
+        super().__init__("Forager")
+        # Add any specific attributes or methods for ForagerAnt
+
+class SlaveAnt(Ant):
+    def __init__(self):
+        super().__init__("Slave")
+        # Add any specific attributes or methods for SlaveAnt
