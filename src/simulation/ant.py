@@ -38,3 +38,16 @@ class SlaveAnt(Ant):
     def __init__(self):
         super().__init__("Slave")
         # Add any specific attributes or methods for SlaveAnt
+class Queen(ant):
+    def __init__(self):
+        super().__init__("Queen")
+        self.__laying_rate = 0.4
+
+    def laying_rate(self):
+        return self.__laying_rate
+    def lay_eggs(self):
+        if random.random() < self.laying_rate:
+            return Larva()
+
+    def accept_new_ant(self, ant):
+        print(f"La reine à accepté une nouvellle fourmi ({ant.ant_type}).")
