@@ -1,17 +1,7 @@
 import random
 import time
-from .ant import Larva, Ant , ForagerAnt, NurseAnt, WorkerAnt, SlaveAnt, MaleAnt
+from .ant import  Queen, Larva, Ant , ForagerAnt, NurseAnt, WorkerAnt, SlaveAnt, MaleAnt
 
-class Queen:
-    def __init__(self):
-        self.laying_rate = 0.1
-
-    def lay_eggs(self): 
-        if random.random() < self.laying_rate:
-            return Larva()
-
-    def accept_new_ant(self, ant):
-        print(f"La reine à accepté une nouvellle fourmi ({ant.ant_type}).")
 
 class AntColony:
     def __init__(self):
@@ -29,7 +19,7 @@ class AntColony:
                 print("La reine a pondu un œuf.")
                 self.larvae.append(new_larva)
 
-            self.queen.lay_eggs()
+            #self.queen.lay_eggs()
             for larva in self.larvae:
                 larva.age += 1
                 if larva.age >= larva.time_to_hatch:
@@ -41,5 +31,5 @@ class AntColony:
         return len(self.larvae)
 
     def get_ant_count(self):
-        return sum(1 for larva in self.larvae if larva.age >= larva.time_to_hatch)
+        return sum(1 for larva in self.larvae if larva.age >= larva.time_to_hatch) + len(self.queen.accepted_ants)
 

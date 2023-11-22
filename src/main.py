@@ -10,6 +10,11 @@ def run_simulation_cli(simulation_time):
         ant_colony.simulate_time_passing(1)
         time.sleep(1)
 
+    larva_count = ant_colony.get_larva_count()
+    ant_count = ant_colony.get_ant_count()
+    print(f"Nombre de larves: {larva_count}")
+    print(f"Nombre de fourmis: {ant_count}")
+
 def main():
     parser = argparse.ArgumentParser(description='Simulation de gestion de colonie de fourmis')
     parser.add_argument('--temps_simulation', type=float, help='Temps de simulation')
@@ -22,21 +27,25 @@ def main():
     else:
         run_simulation_cli(args.temps_simulation)
 
-# Simulation
-ant_colony = AntColony()
 
-# Simuler le passage du temps
-for _ in range(10):
-    ant_colony.simulate_time_passing(1)
-    time.sleep(1)
-
-larva_count = ant_colony.get_larva_count()
-ant_count = ant_colony.get_ant_count()
-print(f"Nombre de larves: {larva_count}")
-print(f"Nombre de fourmis: {ant_count}")
 
 if __name__ == "__main__":
+    '''# Simulation
+    ant_colony = AntColony()
+
+    # Simuler le passage du temps
+    for _ in range(10):
+        ant_colony.simulate_time_passing(1)
+        time.sleep(1)
+
+    larva_count = ant_colony.get_larva_count()
+    ant_count = ant_colony.get_ant_count()
+    print(f"Nombre de larves: {larva_count}")
+    print(f"Nombre de fourmis: {ant_count}")
+ '''
     main()
+
+
 
 
 
