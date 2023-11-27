@@ -1,7 +1,7 @@
 import random
 import time
 from .ant import Queen, Larva, Ant, SlaverAnt, NurseAnt, SlaveAnt, MaleAnt,SoldierAnt
-
+from collections import defaultdict
 
 class AntColony:
     def __init__(self):
@@ -43,15 +43,19 @@ class AntColony:
         print(f"Types de fourmis générés : {self.generated_ant_types}")
     
 
-
-
     def show_generated_ant_types(self):
         print("\nTypes de fourmis générés pendant la simulation:")
-        if not self.generated_ant_types:
+        
+        ant_type_counts = defaultdict(int)
+
+        for ant_type in self.generated_ant_types:
+            ant_type_counts[ant_type] += 1
+
+        if not ant_type_counts:
             print("Aucune fourmi générée.")
         else:
-            for ant_type in self.generated_ant_types:
-                print(ant_type)
+            for ant_type, count in ant_type_counts.items():
+                print(f"{ant_type}: {count}")
 
     def get_larva_count(self):
         return len(self.__larvae)
