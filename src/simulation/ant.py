@@ -80,6 +80,9 @@ class Queen(Ant):
         """
         if random.random() < self.laying_rate:
             return Larva(300,300)
+            print("La reine a pondu un œuf.")
+            self.generated_ant_types.append(new_larva.hatch().ant_type)  # Update the list
+            return new_larva
 
     def accept_new_ant(self, ant):
         print(f"La reine a accepté une nouvelle fourmi ({ant.ant_type}).")
@@ -144,7 +147,7 @@ class SoldierAnt(Ant):
         self.__defense = 0.1
         self.__exit = False
         self.__survive_rate= 0.4
-        self.__dig_speed = dig_speed
+        self.__dig_speed = 0.5
 
     @property
     def defense(self):

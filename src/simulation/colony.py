@@ -8,6 +8,7 @@ class AntColony:
         self.__queen = Queen()
         self.__larvae = []
         self.__time = 0
+        self.generated_ant_types = []
 
     @property
     def queen(self):
@@ -30,14 +31,27 @@ class AntColony:
             if new_larva:
                 print("La reine a pondu un œuf.")
                 self.add_larva(new_larva)
+                new_ant = new_larva.hatch()
+                print(f"Une nouvelle fourmi ({new_ant.ant_type}) est née!")
+                self.__queen.accept_new_ant(new_ant)
+                self.remove_larva(new_larva)
+                self.generated_ant_types.append(new_ant.ant_type)
+            else:
+                print("La reine n'a pas pondu d'œuf.")
+        print(f"Nombre de larves : {len(self.__larvae)}")
+        print(f"Nombre de fourmis : {len(self.__queen.accepted_ants)}")
+        print(f"Types de fourmis générés : {self.generated_ant_types}")
+    
 
-            for larva in self.__larvae:
-                larva.ajout_age()
-                if larva.age >= larva.time_to_hatch:
-                    new_ant = larva.hatch()
-                    print(f"Une nouvelle fourmi ({new_ant.ant_type}) est née!")
-                    self.__queen.accept_new_ant(new_ant)
-                    self.remove_larva(larva)
+
+
+    def show_generated_ant_types(self):
+        print("\nTypes de fourmis générés pendant la simulation:")
+        if not self.generated_ant_types:
+            print("Aucune fourmi générée.")
+        else:
+            for ant_type in self.generated_ant_types:
+                print(ant_type)
 
     def get_larva_count(self):
         return len(self.__larvae)
