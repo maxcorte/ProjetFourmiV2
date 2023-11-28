@@ -1,39 +1,72 @@
 import random
 import time
-from .ant import Larva, Ant , ForagerAnt, NurseAnt, WorkerAnt, SlaveAnt, MaleAnt, Queen
+from .ant import Queen, Larva, Ant, SlaverAnt, NurseAnt, SlaveAnt, MaleAnt,SoldierAnt
+from collections import defaultdict
 
 class AntColony:
     def __init__(self):
         self.__queen = Queen()
         self.__larvae = []
         self.__time = 0
+        self.generated_ant_types = []
 
+    @property
     def queen(self):
         return self.__queen
+
+    @property
     def larvae(self):
         return self.__larvae
+
+    @property
     def time(self):
         return self.__time
+
     def simulate_time_passing(self, time_units):
         for _ in range(time_units):
-            self.time += 1
-            print(f"Temps passé: {self.time} unité(s)")
+            self.__time += 1
+            print(f"Temps passé: {self.__time} unité(s)")
 
-            new_larva = self.queen.lay_eggs()
+            new_larva = self.__queen.lay_eggs()
             if new_larva:
                 print("La reine a pondu un œuf.")
-                self.larvae.append(new_larva)
+                self.add_larva(new_larva)
+                new_ant = new_larva.hatch()
+                print(f"Une nouvelle fourmi ({new_ant.ant_type}) est née!")
+                self.__queen.accept_new_ant(new_ant)
+                self.remove_larva(new_larva)
+                self.generated_ant_types.append(new_ant.ant_type)
+            else:
+                print("La reine n'a pas pondu d'œuf.")
+        print(f"Nombre de larves : {len(self.__larvae)}")
+        print(f"Nombre de fourmis : {len(self.__queen.accepted_ants)}")
+        print(f"Types de fourmis générés : {self.generated_ant_types}")
+    
 
-            for larva in self.larvae:
-                larva.age += 1
-                if larva.age >= larva.time_to_hatch:
-                    new_ant = larva.hatch()
-                    print(f"Une nouvelle fourmi ({new_ant.ant_type}) est née!")
-                    self.queen.accept_new_ant(new_ant)
-                    self.larvae.remove(larva)
+    def show_generated_ant_types(self):
+        print("\nTypes de fourmis générés pendant la simulation:")
+        
+        ant_type_counts = defaultdict(int)
+
+        for ant_type in self.generated_ant_types:
+            ant_type_counts[ant_type] += 1
+
+        if not ant_type_counts:
+            print("Aucune fourmi générée.")
+        else:
+            for ant_type, count in ant_type_counts.items():
+                print(f"{ant_type}: {count}")
+
     def get_larva_count(self):
-        return len(self.larvae)
+        return len(self.__larvae)
 
     def get_ant_count(self):
-        return sum(1 for larva in self.larvae if larva.age >= larva.time_to_hatch)
+        return sum(1 for larva in self.__larvae if larva.age >= larva.time_to_hatch) + len(self.__queen.accepted_ants)
+
+    def add_larva(self, larva):
+        self.__larvae.append(larva)
+
+    def remove_larva(self, larva):
+        self.__larvae.remove(larva)
+
 
