@@ -4,7 +4,7 @@ class Larva:
     def __init__(self,x,y):
         self.__time_to_hatch = random.randint(5, 10)  # Random time for larva to hatch
         self.__age = 0
-        self.__position = x,y
+        self.position = x,y
         self.__id = 0
 
     @property
@@ -13,9 +13,7 @@ class Larva:
     @property
     def age(self):
         return self.__age
-    @property
-    def position(self):
-        return self.__position
+
     @property
     def id(self):
         return self.__id
@@ -24,21 +22,18 @@ class Larva:
     @time_to_hatch.setter
     def time_to_hatch(self,a,b):
         self.__time_to_hatch = random.randint(a,b)
-    @position.setter
-    def position(self,new_x,new_y):
-        self.__position = new_x,new_y
     def hatch(self):
         ant_type = random.choice(["Male", "Nurse", "Slaver", "Slave", "Soldier"])
         return Ant(ant_type,10,400,400)
 
 class Ant:
-    def __init__(self, ant_type,height,x,y):
+    def __init__(self, ant_type, height, x, y):
         self.ant_type = ant_type
         self.__id = 0
         self.__height = height
         self.__food = 100
         self.__dead = False
-        self.__position = x,y
+        self.position = x, y
         self.__age = 0
     @property
     def hungry(self):
@@ -46,21 +41,15 @@ class Ant:
     @property
     def dead(self):
         return self.__dead
-    @property
-    def position(self):
-        return self.__position
     @hungry.setter
     def hungry(self,value):
         self.__food -= value
     @dead.setter
     def dead(self):
         self.__dead = True
-    @position.setter
-    def get_position(self):
-        pass
 class Queen(Ant):
     def __init__(self):
-        super().__init__("Queen",10,200,200)
+        super().__init__("Queen",10,0, 0)
         self.__laying_rate = 0.4
         self.accepted_ants = []
     @property
@@ -84,8 +73,8 @@ class Queen(Ant):
             self.generated_ant_types.append(new_larva.hatch().ant_type)  # Update the list
             return new_larva
 
+
     def accept_new_ant(self, ant):
-        print(f"La reine a accepté une nouvelle fourmi ({ant.ant_type}).")
         self.accepted_ants.append(ant)
 
 

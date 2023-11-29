@@ -17,13 +17,12 @@ def run_simulation_cli(ant_colony, simulation_time):
 def main(ant_colony):
     while True:
         parser = argparse.ArgumentParser(description='Simulation de gestion de colonie de fourmis')
-        parser.add_argument('--temps_simulation', type=float, help='Temps de simulation')
         parser.add_argument('--gui', action='store_true', help='Lancer l\'interface graphique')
 
         args = parser.parse_args()
 
         if args.gui:
-            run_simulation_gui()
+            run_simulation_gui(ant_colony)
         else:
             temps_simulation = input("Combien de temps voulez-vous faire avancer la simulation? ")
             run_simulation_cli(ant_colony, temps_simulation)

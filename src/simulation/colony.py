@@ -5,18 +5,13 @@ from collections import defaultdict
 
 class AntColony:
     def __init__(self):
-        self.__queen = Queen()
-        self.__larvae = []
+        self.queen = Queen()
+        self.larvae = []
         self.__time = 0
         self.generated_ant_types = []
+        self.dicAnt = {}
 
-    @property
-    def queen(self):
-        return self.__queen
 
-    @property
-    def larvae(self):
-        return self.__larvae
 
     @property
     def time(self):
@@ -27,19 +22,19 @@ class AntColony:
             self.__time += 1
             print(f"Temps passé: {self.__time} unité(s)")
 
-            new_larva = self.__queen.lay_eggs()
+            new_larva = self.queen.lay_eggs()
             if new_larva:
                 print("La reine a pondu un œuf.")
                 self.add_larva(new_larva)
                 new_ant = new_larva.hatch()
                 print(f"Une nouvelle fourmi ({new_ant.ant_type}) est née!")
-                self.__queen.accept_new_ant(new_ant)
+                self.queen.accept_new_ant(new_ant)
                 self.remove_larva(new_larva)
                 self.generated_ant_types.append(new_ant.ant_type)
             else:
                 print("La reine n'a pas pondu d'œuf.")
-        print(f"Nombre de larves : {len(self.__larvae)}")
-        print(f"Nombre de fourmis : {len(self.__queen.accepted_ants)}")
+        print(f"Nombre de larves : {len(self.larvae)}")
+        print(f"Nombre de fourmis : {len(self.queen.accepted_ants)}")
         print(f"Types de fourmis générés : {self.generated_ant_types}")
     
 
@@ -58,15 +53,15 @@ class AntColony:
                 print(f"{ant_type}: {count}")
 
     def get_larva_count(self):
-        return len(self.__larvae)
+        return len(self.larvae)
 
     def get_ant_count(self):
-        return sum(1 for larva in self.__larvae if larva.age >= larva.time_to_hatch) + len(self.__queen.accepted_ants)
+        return sum(1 for larva in self.larvae if larva.age >= larva.time_to_hatch) + len(self.queen.accepted_ants)
 
     def add_larva(self, larva):
-        self.__larvae.append(larva)
+        self.larvae.append(larva)
 
     def remove_larva(self, larva):
-        self.__larvae.remove(larva)
+        self.larvae.remove(larva)
 
 
