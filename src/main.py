@@ -4,7 +4,18 @@ from simulation.colony import AntColony
 from gui import run_simulation_gui
 
 def run_simulation_cli(ant_colony, simulation_time):
+    """
+    Exécute une simulation en mode ligne de commande d'une colonie de fourmis pendant une période donnée.
 
+    PRE:
+    - ant_colony est une instance valide de la classe AntColony.
+    - simulation_time est un nombre entier ou flottant représentant la durée de la simulation en secondes.
+
+    POST:
+    - La simulation de la colonie de fourmis est exécutée pendant la durée spécifiée.
+    - Aucune modification permanente de l'état de la colonie n'est effectuée par cette fonction.
+    - Affiche le nombre de larves et de fourmis à la fin de la simulation.
+    """
     for _ in range(int(simulation_time)):
         ant_colony.simulate_time_passing(1)
         time.sleep(1)
@@ -15,6 +26,17 @@ def run_simulation_cli(ant_colony, simulation_time):
     print(f"Nombre de fourmis: {ant_count}")
 
 def main(ant_colony):
+    """
+    Fonction principale pour lancer la simulation de gestion d'une colonie de fourmis.
+
+    PRE:
+    - ant_colony est une instance valide de la classe AntColony.
+
+    POST:
+    - La fonction permet à l'utilisateur de choisir entre lancer une simulation en mode GUI ou en mode CLI.
+    - Affiche les types de fourmis générés pendant la simulation si l'utilisateur le demande.
+    - La simulation continue tant que l'utilisateur souhaite poursuivre.
+    """
     while True:
         parser = argparse.ArgumentParser(description='Simulation de gestion de colonie de fourmis')
         parser.add_argument('--gui', action='store_true', help='Lancer l\'interface graphique')
