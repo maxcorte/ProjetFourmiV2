@@ -64,7 +64,7 @@ def action():
     pass
 
 
-def check_color_and_adjust(x, y, move, count, screen, noise_map, digging_list):
+def check_color_and_adjust(x, y, move, count,window_width,window_height, screen, noise_map, digging_list):
     """
     Fonction pour vérifier la couleur sous la fourmi et ajuster le mouvement en conséquence.
 

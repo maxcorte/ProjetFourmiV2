@@ -9,7 +9,7 @@ class AntColony:
         self.larvae = []
         self.__time = 0
         self.generated_ant_types = []
-        self.dicAnt = {}
+        self.dic_ant = {}
 
 
 
