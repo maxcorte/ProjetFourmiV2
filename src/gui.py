@@ -13,7 +13,7 @@ import random
 
 
 noise_map = generate_noise_map(3440, 1440, scale=135, octaves=1, persistence=2, lacunarity=0.6,
-                               seed=2)
+                               seed=random.randint(0, 1000))
 def run_simulation_gui(ant_colony):
     """
     Exécute une simulation graphique d'une colonie de fourmis.
@@ -48,6 +48,14 @@ def run_simulation_gui(ant_colony):
             if event.type == QUIT:
                 running = False
         screen.fill(background_color)
+        # Dessiner la noise map
+        """
+        for i in range(WINDOW_WIDTH):
+            for j in range(WINDOW_HEIGHT):
+                value = int(noise_map[i][j] * 255)  # Convertir la valeur de bruit en une valeur de couleur
+                color = (value, value, value)
+                pygame.draw.rect(screen, color, (i, j, 1, 1))        
+        """
 
         pygame.draw.rect(screen, (255, 255, 255), (WINDOW_WIDTH // 2 - 100, WINDOW_HEIGHT // 2 - 100, 200, 200))
         pygame.draw.rect(screen, (255, 255, 255), (WINDOW_WIDTH // 2 -50, WINDOW_HEIGHT // 2 +100, 100, WINDOW_HEIGHT//2-100))
