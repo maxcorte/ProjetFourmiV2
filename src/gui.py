@@ -8,6 +8,29 @@ import random
 import noise
 
 
+def generate_noise_map(width, height, scale, octaves, persistence, lacunarity, seed):
+    world = [[0] * height for _ in range(width)]
+    for i in range(width):
+        for j in range(height):
+            world[i][j] = noise.pnoise2(i / scale,
+                                        j / scale,
+                                        octaves=octaves,
+                                        persistence=persistence,
+                                        lacunarity=lacunarity,
+                                        repeatx=1024,
+                                        repeaty=1024,
+                                        base=seed)
+
+    # Normalisation des valeurs pour les ramener entre 0 et 1
+    min_noise = min(map(min, world))
+    max_noise = max(map(max, world))
+    for i in range(width):
+        for j in range(height):
+            world[i][j] = (world[i][j] - min_noise) / (max_noise - min_noise)
+
+    return world
+noise_map = generate_noise_map(3440, 1440, scale=135, octaves=1, persistence=2, lacunarity=0.6,
+                               seed=2)
 def run_simulation_gui(ant_colony):
     pygame.init()
 # --------------------------------------------- Infos screen ------------------------------------------------------
@@ -26,13 +49,13 @@ def run_simulation_gui(ant_colony):
 
     digging_list = []
     running = True
-    noise_map = generate_noise_map(WINDOW_WIDTH, WINDOW_HEIGHT, scale=20, octaves=6, persistence=0.5, lacunarity=2.0,
-                                   seed=1)
+
     while running:
         for event in pygame.event.get():
             if event.type == QUIT:
                 running = False
         screen.fill(background_color)
+
         pygame.draw.rect(screen, (255, 255, 255), (WINDOW_WIDTH // 2 - 100, WINDOW_HEIGHT // 2 - 100, 200, 200))
         pygame.draw.rect(screen, (255, 255, 255), (WINDOW_WIDTH // 2 -50, WINDOW_HEIGHT // 2 +100, 100, WINDOW_HEIGHT//2-100))
         pygame.draw.rect(screen, (255, 255, 255), (0, 0, WINDOW_WIDTH, WINDOW_HEIGHT // 6))
@@ -170,10 +193,14 @@ def run_simulation_gui(ant_colony):
 
                     # Utiliser la carte de bruit pour déterminer si la fourmi doit creuser
                     noise_value = noise_map[int(new_x)][int(new_y)]
-                    digging_threshold = 0.5  # Ajustez ce seuil selon vos besoins
-                    if color_under_ant == (34, 139, 34) and noise_value > digging_threshold:
-                        digging_list.append((int(new_x), int(new_y)))
+                    digging_threshold = 0.55  # Ajustez ce seuil selon vos besoins
 
+                    if color_under_ant == (34, 139, 34) and noise_value < digging_threshold:
+                        digging_list.append((int(new_x), int(new_y)))
+                    elif color_under_ant == (34, 139, 34) and noise_value >= digging_threshold:
+                        # Faire demi-tour si proche de la couleur verte
+                        move = angle + math.pi
+                        count = random.randint(7, 12)
                     # Mettre à jour la position de la fourmi
                     ant_colony.dicAnt[ant_key] = (ant, new_x, new_y, count, move)
                     pygame.draw.circle(screen, (0, 0, 255), (int(new_x), int(new_y)), 8)
@@ -191,7 +218,7 @@ def run_simulation_gui(ant_colony):
         screen.blit(ant_text, (50, 135))
 
         pygame.display.flip()
-        clock.tick(60)  # Limite le nombre d'images par seconde
+        clock.tick(240)  # Limite le nombre d'images par seconde
 
     pygame.quit()
 
