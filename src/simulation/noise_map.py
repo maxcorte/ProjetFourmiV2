@@ -1,4 +1,6 @@
 import noise
+
+
 def generate_noise_map(width, height, scale, octaves, persistence, lacunarity, seed):
     """
     Génère une carte de bruit en 2D.

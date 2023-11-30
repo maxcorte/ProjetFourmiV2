@@ -1,7 +1,8 @@
 import math
 import random
+global angle, distance
 
-def move(x, y, count, move, WINDOW_WIDTH, WINDOW_HEIGHT):
+def move(x, y, count, move, window_width, window_height):
     """
     Logique de mouvement pour les fourmis soldats.
 
@@ -17,6 +18,7 @@ def move(x, y, count, move, WINDOW_WIDTH, WINDOW_HEIGHT):
     - Les nouvelles coordonnées, le nouveau compteur de mouvement et la nouvelle direction sont renvoyés.
     """
     # Choisir un mouvement aléatoire
+    global angle, distance
     if count == 0:
         random_move = random.randint(0, 3)
         if random_move == 0:
@@ -40,7 +42,7 @@ def move(x, y, count, move, WINDOW_WIDTH, WINDOW_HEIGHT):
     new_x = x + distance * math.cos(angle)
     new_y = y + distance * math.sin(angle)
 
-    if not (30 <= new_x <= WINDOW_WIDTH - 30 and WINDOW_HEIGHT / 6 + 30 <= new_y <= WINDOW_HEIGHT - 30):
+    if not (30 <= new_x <= window_width - 30 and window_height / 6 + 30 <= new_y <= window_height - 30):
         # Inverser la direction en ajoutant ou soustrayant π (pi)
         angle += math.pi
         # Recalculer les nouvelles coordonnées avec la direction inversée
@@ -48,6 +50,8 @@ def move(x, y, count, move, WINDOW_WIDTH, WINDOW_HEIGHT):
         new_y = y + distance * math.sin(angle)
 
     return new_x, new_y, count, move
+
+
 def action():
     """
     Logique d'action pour les fourmis soldats.
@@ -59,7 +63,8 @@ def action():
     """
     pass
 
-def check_color_and_adjust(x, y, move, count, WINDOW_WIDTH, WINDOW_HEIGHT, screen, noise_map, digging_list):
+
+def check_color_and_adjust(x, y, move, count, screen, noise_map, digging_list):
     """
     Fonction pour vérifier la couleur sous la fourmi et ajuster le mouvement en conséquence.
 
