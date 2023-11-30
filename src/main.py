@@ -1,5 +1,6 @@
 import argparse
 import time
+import sys
 from simulation.colony import AntColony
 from gui import run_simulation_gui
 

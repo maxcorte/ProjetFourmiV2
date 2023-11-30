@@ -2,9 +2,9 @@ import random
 import pygame
 from pygame.locals import QUIT
 from simulation.noise_map import generate_noise_map
-from simulation.intelligence.male_ai import (
+from simulation.intelligence.simple_ai import (
     move as male_move, action as male_action, check_color_and_adjust as male_check_color_and_adjust)
-from simulation.intelligence.soldier_ai import (
+from simulation.intelligence.advanced_ai import (
     move as soldier_move, action as soldier_action, check_color_and_adjust as soldier_check_color_and_adjust)
 
 noise_map = generate_noise_map(3440, 1440, scale=135, octaves=1, persistence=2, lacunarity=0.6, seed=2)
@@ -45,11 +45,11 @@ def run_simulation_gui(ant_colony):
         screen.fill(background_color)
         # Dessiner la noise map
 
-        for i in range(window_width):
-            for j in range(window_height):
-                value = int(noise_map[i][j] * 255)  # Convertir la valeur de bruit en une valeur de couleur
-                color = (value, value, value)
-                pygame.draw.rect(screen, color, (i, j, 1, 1))
+        #for i in range(window_width):
+         #   for j in range(window_height):
+          #      value = int(noise_map[i][j] * 255)  # Convertir la valeur de bruit en une valeur de couleur
+           #     color = (value, value, value)
+            #    pygame.draw.rect(screen, color, (i, j, 1, 1))
 
         pygame.draw.rect(screen, (255, 255, 255), (window_width // 2 - 100, window_height // 2 - 100, 200, 200))
         pygame.draw.rect(screen, (255, 255, 255), (window_width // 2 - 50, window_height // 2 + 100, 100,
@@ -63,11 +63,25 @@ def run_simulation_gui(ant_colony):
                              (x - 10, y - 10, 20, 20))
         # --------------------------------------------- Légende ------------------------------------------------------
         pygame.draw.circle(screen, (139, 0, 0), [window_width - 140, 50], 10)
-        text_surface = font.render("= Reine", True, (0, 0, 0))
-        screen.blit(text_surface, (window_width - 120, 35))
+        pygame.draw.circle(screen, (165, 42, 42), [window_width - 140, 75], 10)
+        pygame.draw.circle(screen, (255, 105, 180), [window_width - 140, 100], 10)
+        pygame.draw.circle(screen, (0, 0, 0), [window_width - 140, 125], 10)
+        pygame.draw.circle(screen, (255, 255, 0), [window_width - 140, 150], 10)
+        pygame.draw.circle(screen,  (0, 0, 255), [window_width - 140, 175], 10)
+        text_reine = font.render("= Reine", True, (0, 0, 0))
+        screen.blit(text_reine, (window_width - 120, 35))
+        text_male = font.render("= Mâle", True, (0, 0, 0))
+        screen.blit(text_male, (window_width - 120, 60))
+        text_nurse = font.render("= Nourrice", True, (0, 0, 0))
+        screen.blit(text_nurse, (window_width - 120, 85))
+        text_slaver = font.render("= Esclavagiste", True, (0, 0, 0))
+        screen.blit(text_slaver, (window_width - 120, 110))
+        text_slave = font.render("= Esclave", True, (0, 0, 0))
+        screen.blit(text_slave, (window_width - 120, 135))
+        text_soldier = font.render("= Soldat", True, (0, 0, 0))
+        screen.blit(text_soldier, (window_width - 120, 160))
         # ---------------------------------------------- Larves --------------------------------------------------------
         new_larva = ant_colony.queen.lay_eggs()
-
         if new_larva:
             collides = False
             new_larva_rect = pygame.Rect(new_larva.position[0], new_larva.position[1], 20, 20)
@@ -98,7 +112,6 @@ def run_simulation_gui(ant_colony):
         for larva in larvae_to_remove:
             ant_colony.larvae.remove(larva)
         # ---------------------------------------------- Fourmis ------------------------------------------------
-
         ants_to_remove = []
         for ant_key, (ant, x, y, count, move) in ant_colony.dicAnt.items():
             ant.age += 1
@@ -122,8 +135,7 @@ def run_simulation_gui(ant_colony):
                     new_x, new_y, count, move = soldier_move(x, y, count, move, window_width, window_height)
                     soldier_action()
 
-                    move, count = soldier_check_color_and_adjust(new_x, new_y, move, count, window_width,
-                                                                 window_height, screen, noise_map, digging_list)
+                    move, count = soldier_check_color_and_adjust(new_x, new_y, move, count, screen, noise_map, digging_list)
 
                     ant_colony.dicAnt[ant_key] = (ant, new_x, new_y, count, move)
                     pygame.draw.circle(screen, (0, 0, 255), (int(new_x), int(new_y)), 8)
@@ -132,11 +144,6 @@ def run_simulation_gui(ant_colony):
                 ants_to_remove.append(ant_key)
         for ant_key in ants_to_remove:
             del ant_colony.dicAnt[ant_key]
-        # ---------------------------------------------- Texte --------------------------------------------------------
-        larva_text = font.render(str(ant_colony.larvae), True, (0, 0, 0))
-        screen.blit(larva_text, (50, 35))
-        ant_text = font.render(str(ant_colony.dicAnt), True, (0, 0, 0))
-        screen.blit(ant_text, (50, 135))
 
         pygame.display.flip()
         clock.tick(20)  # Limite le nombre d'images par seconde

@@ -59,7 +59,7 @@ def action():
     - Cette fonction peut être appelée à chaque itération de la simulation pour mettre à jour l'état des fourmis mâles.
     """
     pass
-def check_color_and_adjust(x, y, move, count, WINDOW_WIDTH, WINDOW_HEIGHT, screen):
+def check_color_and_adjust(x, y, move, count, window_width, window_heigth, screen):
     """
     Fonction pour vérifier la couleur sous la fourmi et ajuster le mouvement en conséquence.
 
